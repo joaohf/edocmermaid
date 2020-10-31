@@ -1,0 +1,3 @@
+-define(MERMAID_URL_KEY, mermaid_url).
+-define(MERMAID_JS, "mermaid.min.js").
+-define(DEFAULT_MERMAID_JS, {file, ?MERMAID_JS}).

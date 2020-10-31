@@ -1,0 +1,147 @@
+@title mermaid extension for edoc
+@author João Henrique Ferreira de Freitas <joaohf@gmail.com>
+@copyright {@years} João Henrique Ferreira de Freitas
+@version {@version}
+
+@doc
+
+The purpose of this tiny library is to help creating better documentation using text based
+diagram that allows expressing ideas using traditional techniques like sequence diagram,
+state chart and flowcharts. The <a href="https://mermaid-js.github.io/mermaid/" target="_blank">mermaid</a>
+javascript library renders Markdown-inspired text and creates each diagram dynamically. edocmermaid
+is just a little help to make mermaid happens when writing documentation with edoc tool.
+
+edocmermaid brings two additional modules that include the mermaid javascript library for
+each html page created by running edoc.
+
+The module {@link edocmermaid_doclet} check and copy the mermaid javascript to the correct 
+place. While the module {@link edocmermaid_layout} patches each html file, created by edoc,
+adding a reference and enabling mermaid javascript.
+
+<h2>Contents</h2>
+
+<ol>
+  <li>{@section Configure rebar3}</li>
+  <li>{@section Add mermaid tag}</li>
+  <li>{@section Examples}</li>
+</ol>
+
+<h2>Configure rebar3</h2>
+
+Add edocmermaid dependency to the docs profile. Like this:
+
+```
+{profiles, [
+  {docs, [
+    {deps, [edocmermaid]}
+  ]}
+]}.
+'''
+
+That way, the rebar3 command edoc will fetch and use edocmermaid as dependency.
+
+Next, the following <a href="http://erlang.org/doc/man/edoc.html#run-2" target="_blank">edoc options</a> 
+are necessary in order to configure edoc callbacks properly:
+
+<ul>
+  <li>doclet</li>
+  <li>layout</li>
+</ul>
+
+Also, if specified, the option `mermaid_url' can be used as an alternative mermaid javascript
+location. The default is copy and use the edocmermaid version.
+
+The section `edoc_opts` from `rebar.config' file will look like this:
+
+```
+{edoc_opts, [
+    {doclet, edocmermaid_doclet},
+    {layout, edocmermaid_layout},
+    % specificy the mermaid URL, optional
+    {mermaid_url, "https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"}
+]}.
+'''
+
+<h2>Add mermaid tag</h2>
+
+Wherever you want to add text based diagram, use the `<div class=mermaid>' tag. like so:
+```
+<div class="mermaid">
+sequenceDiagram
+    Alice->>John: Hello John, how are you?
+    Note over Alice,John: A typical interaction
+</div>
+'''
+
+<div class="mermaid">
+sequenceDiagram
+    Alice->>John: Hello John, how are you?
+    Note over Alice,John: A typical interaction
+</div>
+
+<h2>Examples</h2>
+
+Please visite the <a href="https://mermaid-js.github.io/mermaid/" target="_blank">mermaid</a> website
+for a full set of examples and valuable instructions about how to use mermaid.
+
+The following examples is just a prove of concept that <strong>edocmermaid</strong> works.
+
+<ul>
+  <li>Basic sequence diagram</li>
+    <div class="mermaid">
+sequenceDiagram
+    Alice ->> Bob: Hello Bob, how are you?
+    Bob-->>John: How about you John?
+    Bob--x Alice: I am good thanks
+    Bob-x John: I am good thanks
+    Bob-->Alice: Checking with John...
+    Alice->John: Yes... John, how are you?
+    </div>
+  <li>Graph</li>
+    <div class="mermaid">
+graph LR
+    A-- This is the text! ---B
+    </div>
+  <li>Graph with style</li>
+    <div class="mermaid">
+graph LR
+    id1(Start)-->id2(Stop)
+    style id1 fill:#f9f,stroke:#333,stroke-width:4px
+    style id2 fill:#bbf,stroke:#f66,stroke-width:2px,color:#fff,stroke-dasharray: 5 5
+    </div>
+  <li>State diagram</li>
+    <div class="mermaid">
+stateDiagram-v2
+    [*] --> Still
+    Still --> [*]
+    Still --> Moving
+    Moving --> Still
+    Moving --> Crash
+    Crash --> [*]
+    </div>
+  <li>Entity Relationship Diagrams</li>
+    <div class="mermaid">
+erDiagram
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--|{ LINE-ITEM : contains
+    CUSTOMER }|..|{ DELIVERY-ADDRESS : uses
+    </div>
+  <li>Pie Chart</li>
+    <div class="mermaid">
+pie
+    title Key elements in Product X
+    "Calcium" : 42.96
+    "Potassium" : 50.05
+    "Magnesium" : 10.01
+    "Iron" :  5
+    </div>
+</ul>
+
+<h2>License</h2>
+
+<ol>
+  <ul>edocmermaid: <a href="https://github.com/joaohf/edocmermaid/LICENSE" target="_blank">Apache 2 License</a>.</ul>
+  <ul>mermaid: <a href="https://github.com/joaohf/edocmermaid/LICENSE.mermaid" target="_blank">MIT License</a></ul>
+</ol>
+
+@end
